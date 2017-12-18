@@ -123,7 +123,7 @@ void Move::on_txtBias_editingFinished()
     if (EnableRun == true) {
       double angle = bias / 180.0 * PI;
       qDebug("angle: %lf",angle);
-      MC->SetTag(angle);
+      //MC->SetTag(angle);
     }
   }
 }
@@ -138,9 +138,9 @@ void Move::on_cmbWorkMode_currentIndexChanged(int index)
   uint8_t workMode = static_cast<uint8_t>(index);
 
   jointBeingUsed->setWorkMode(workMode);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(10);
   jointBeingUsed->updateWorkMode();
-  can1->controller.delayMs(5);
+  can1->controller.delayMs(10);
 
   // 工作模式更新bias
   workModeUpdatetxtBias();
@@ -258,15 +258,17 @@ void Move::on_confirmButton_clicked()
   uiMove->confirmButton->setStyleSheet(confirmButtonOn);
   uiMove->stopButton->setStyleSheet(stopButtonOff);
 
-  if (uiMove->cmbWorkMode->currentIndex() == MODE_POSITION
-      && uiMove->waveModeCombo->currentIndex() == MODE_MANUAL) {
-    // 改成用10ms控制器控制的方式
-    float angle = (float)(bias / 180.0 * PI);
-    MC->SetTag(angle);
-  } else {
+//  if (uiMove->cmbWorkMode->currentIndex() == MODE_POSITION
+//      && uiMove->waveModeCombo->currentIndex() == MODE_MANUAL) {
+//    // 改成用10ms控制器控制的方式
+//    float angle = (float)(bias / 180.0 * PI);
+//    MC->SetTag(angle);
+//  } else {
+//    slotTimeMoveDone();
+//    timerMove->start(MOTION_CONTROL_INTEVAL);
+//  }
     slotTimeMoveDone();
     timerMove->start(MOTION_CONTROL_INTEVAL);
-  }
 }
 
 void Move::on_stopButton_clicked()

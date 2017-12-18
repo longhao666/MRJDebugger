@@ -195,8 +195,8 @@ void PID::setNewPID(int value,uint8_t index)
     }
     // 向下位机请求数据
     uint8_t data[2] = {0,0};
-    data[1] = (uint8_t)( (value & 0xff00) >> 8 );
-    data[0] = (uint8_t)( value & 0xff );
+    data[1] = (uint8_t)( (value & 0xff00) >> 8 );  //0000 0000 & 1111 1111 = 0x00;
+    data[0] = (uint8_t)( value & 0xff ); // 0000 0000 & 1111 1111 = 0x00;
     can1->controller.SendMsg(jointBeingUsed->ID, CMDTYPE_WR_NR, index, data, 2);
     can1->controller.delayMs(1);
     qDebug("PID::setNewPID(): value = %d", value);
