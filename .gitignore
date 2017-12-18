@@ -1,0 +1,5 @@
+build*/
+qwt/
+[Dd]ebug*/
+[Rr]elease*/
+*.user

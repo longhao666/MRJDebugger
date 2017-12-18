@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdvancedControl</class>
+ <widget class="QDialog" name="AdvancedControl">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>429</width>
+    <height>94</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>命令发送高级模式</string>
+  </property>
+  <widget class="QSplitter" name="splitter_2">
+   <property name="geometry">
+    <rect>
+     <x>32</x>
+     <y>21</y>
+     <width>361</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+   <widget class="QSplitter" name="splitter">
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <widget class="QLineEdit" name="lineEdit_ID">
+     <property name="text">
+      <string>设备ID</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_CMDType">
+     <item>
+      <property name="text">
+       <string>RD</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>WR</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>WR_NR</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>WR_REG</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SCP</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>RD_HP</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_index">
+     <property name="text">
+      <string>参数表索引</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_data">
+     <property name="text">
+      <string>写入的数据</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_dataLength">
+     <property name="text">
+      <string>字节数</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QDialogButtonBox" name="buttonBox">
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="standardButtons">
+     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>lineEdit_ID</tabstop>
+  <tabstop>comboBox_CMDType</tabstop>
+  <tabstop>lineEdit_index</tabstop>
+  <tabstop>lineEdit_data</tabstop>
+  <tabstop>lineEdit_dataLength</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AdvancedControl</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
