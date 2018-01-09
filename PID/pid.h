@@ -36,13 +36,16 @@ private slots:
   void on_POS_ISpinBox_editingFinished();
   void on_POS_DSpinBox_editingFinished();
   void on_POS_DSSpinBox_editingFinished();
+
   void on_SPD_PSpinBox_editingFinished();
   void on_SPD_ISpinBox_editingFinished();
   void on_SPD_DSpinBox_editingFinished();
   void on_SPD_DSSpinBox_editingFinished();
+
   void on_CUR_PSpinBox_editingFinished();
   void on_CUR_ISpinBox_editingFinished();
   void on_CUR_DSpinBox_editingFinished();
+
   void on_maxCurLineEdit_editingFinished();
   void on_maxSpdLineEdit_editingFinished();
   void on_maxAccLineEdit_editingFinished();
@@ -50,6 +53,7 @@ private slots:
   void on_maxPosLLineEdit_editingFinished();
   void on_minPosHLineEdit_editingFinished();
   void on_maxPosHLineEdit_editingFinished();
+
   void on_adjustGroupComboBox_currentIndexChanged(int index);
 
 private:

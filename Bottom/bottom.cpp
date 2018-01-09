@@ -1,4 +1,4 @@
-﻿#include "bottom.h"
+#include "bottom.h"
 #include "ui_bottom.h"
 #include <iostream>
 #include <QDebug>
@@ -151,7 +151,10 @@ void Bottom::updatecmbID()
     //        moveInitialize();
   } else {
     // 触发cmbID的index改变的槽函数。获取末尾ID，方便调试，index从0开始，size从1开始
+      qDebug("==============================gggg============================");
     uiBottom->cmbID->setCurrentIndex(static_cast<int>(can1->controller.allJoint.size()) - 1);
+    qDebug("==============================ggffffgg============================");
+
   }
   qDebug()<<12345777<<jointBeingUsed;
 }
@@ -265,10 +268,14 @@ void Bottom::on_btnFlash_clicked()
 
 void Bottom::on_cmbID_currentIndexChanged(const QString &arg1)
 {
+    qDebug("==============================gdccdcdggg============================");
+
   jointBeingUsed = can1->findJointID(arg1.toUInt()); // 修改当前控制的模块ID
   if (jointBeingUsed == NULL) {
     return;
   }
+  qDebug("=============================sfsf=gggg============================");
+
   qDebug() << "on_cmbID_currentIndexChanged(): "
            << "ID = "
            << jointBeingUsed->ID;

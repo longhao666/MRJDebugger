@@ -37,8 +37,8 @@ Move::Move(UserControlOnCan* can1, Joint* jointBeingUsed, QWidget* parent) :
 {
   uiMove->setupUi(this);
   this->can1 = can1;
-  this->jointBeingUsed = jointBeingUsed;
-  qDebug()<<123<<"move"<<jointBeingUsed;
+  //this->jointBeingUsed = jointBeingUsed;
+  //qDebug()<<123<<"move"<<jointBeingUsed;
 }
 
 Move::~Move()
@@ -49,7 +49,7 @@ Move::~Move()
 void Move::moveInitialize(uint16_t ID)
 {
 
-    qDebug()<<1234444<<"move"<<jointBeingUsed;
+   // qDebug()<<1234444<<"move"<<jointBeingUsed;
   // 设置启动、停止按钮的样式表，background-color背景色
   stopButtonOn = "color: rgb(";
   stopButtonOn += QString::number(TGPOS_RGB_R) + ','
@@ -78,12 +78,12 @@ void Move::moveInitialize(uint16_t ID)
     jointBeingUsed->updateCurPos();
     can1->controller.delayMs(5);
   }
-  if (this->MC == NULL) {
-    this->MC = new MotionControl(jointBeingUsed, this);
-  } else {
-    delete this->MC;
-    MC = new MotionControl(jointBeingUsed, this);
-  }
+//  if (this->MC == NULL) {
+//    this->MC = new MotionControl(jointBeingUsed, this);
+//  } else {
+//    delete this->MC;
+//    MC = new MotionControl(jointBeingUsed, this);
+//  }
   if (jointBeingUsed == NULL) {
     return;
   }
@@ -100,7 +100,16 @@ void Move::moveInitialize(uint16_t ID)
 
 void Move::ClickStopButton()
 {
-  on_stopButton_clicked();
+    //这样可以控死
+    if(!EnableRun) {
+    EnableRun = true;
+        on_stopButton_clicked();
+    }else {
+        on_stopButton_clicked();
+    }
+    // 他这样不行,要动,去设置的点
+   // on_stopButton_clicked();
+
 }
 
 void Move::on_txtBias_editingFinished()
@@ -116,16 +125,17 @@ void Move::on_txtBias_editingFinished()
     }
   }
   bias = uiMove->txtBias->text().toDouble();
+  qDebug() << bias << 123;
   txtBiasChangemanualSlider();
-  if (uiMove->cmbWorkMode->currentIndex() == MODE_POSITION
-      && uiMove->waveModeCombo->currentIndex() == MODE_MANUAL) {
-    // 改成用10ms控制器控制的方式
-    if (EnableRun == true) {
-      double angle = bias / 180.0 * PI;
-      qDebug("angle: %lf",angle);
-      //MC->SetTag(angle);
-    }
-  }
+//  if (uiMove->cmbWorkMode->currentIndex() == MODE_POSITION
+//      && uiMove->waveModeCombo->currentIndex() == MODE_MANUAL) {
+//    // 改成用10ms控制器控制的方式
+//    if (EnableRun == true) {
+//      double angle = bias / 180.0 * PI;
+//      qDebug("angle: %lf",angle);
+//      //MC->SetTag(angle);
+//    }
+//  }
 }
 
 void Move::on_cmbWorkMode_currentIndexChanged(int index)
@@ -253,10 +263,10 @@ void Move::on_confirmButton_clicked()
     //        MC->SetTag(angle);
     return;
   }
-  EnableRun = true;
-  uiMove->confirmButton->setText("Running");
-  uiMove->confirmButton->setStyleSheet(confirmButtonOn);
-  uiMove->stopButton->setStyleSheet(stopButtonOff);
+//  EnableRun = true;
+//  uiMove->confirmButton->setText("Running");
+//  uiMove->confirmButton->setStyleSheet(confirmButtonOn);
+//  uiMove->stopButton->setStyleSheet(stopButtonOff);
 
 //  if (uiMove->cmbWorkMode->currentIndex() == MODE_POSITION
 //      && uiMove->waveModeCombo->currentIndex() == MODE_MANUAL) {
@@ -267,8 +277,19 @@ void Move::on_confirmButton_clicked()
 //    slotTimeMoveDone();
 //    timerMove->start(MOTION_CONTROL_INTEVAL);
 //  }
-    slotTimeMoveDone();
-    timerMove->start(MOTION_CONTROL_INTEVAL);
+//    slotTimeMoveDone();
+//    timerMove->start(MOTION_CONTROL_INTEVAL);
+    if(!EnableRun) {
+        EnableRun = true;
+        uiMove->confirmButton->setText("Running");
+        uiMove->confirmButton->setStyleSheet(confirmButtonOn);
+        uiMove->stopButton->setStyleSheet(stopButtonOff);
+        //slotTimeMoveDone();
+        timerMove->start(MOTION_CONTROL_INTEVAL);
+    }else {
+        //qDebug() << 666;
+        return ;
+    }
 }
 
 void Move::on_stopButton_clicked()
@@ -276,11 +297,20 @@ void Move::on_stopButton_clicked()
   if (jointBeingUsed == NULL) {
     return;
   }
-  EnableRun = false;
-  uiMove->stopButton->setStyleSheet(stopButtonOn);
-  uiMove->confirmButton->setText("Click to run");
-  uiMove->confirmButton->setStyleSheet(confirmButtonOff);
-  timerMove->stop(); // 关闭定时器
+//  EnableRun = false;
+//  uiMove->stopButton->setStyleSheet(stopButtonOn);
+//  uiMove->confirmButton->setText("Click to run");
+//  uiMove->confirmButton->setStyleSheet(confirmButtonOff);
+//  timerMove->stop(); // 关闭定时器
+  if(EnableRun) {
+      EnableRun = false;
+      uiMove->stopButton->setStyleSheet(stopButtonOn);
+      uiMove->confirmButton->setText("Click to run");
+      uiMove->confirmButton->setStyleSheet(confirmButtonOff);
+      timerMove->stop();
+  }else {
+      return ;
+  }
   const int workMode = uiMove->cmbWorkMode->currentIndex();
   switch(workMode) // Different WorkMode Different Stop way
   {

@@ -79,6 +79,8 @@ void PID::showSEVPID()
         return;
     }
 
+
+
     uint16_t data_L = 0;
 
     can1->controller.GetValueInTable(jointBeingUsed->ID, SEV_POSITION_P,data_L);
@@ -195,8 +197,9 @@ void PID::setNewPID(int value,uint8_t index)
     }
     // 向下位机请求数据
     uint8_t data[2] = {0,0};
-    data[1] = (uint8_t)( (value & 0xff00) >> 8 );  //0000 0000 & 1111 1111 = 0x00;
-    data[0] = (uint8_t)( value & 0xff ); // 0000 0000 & 1111 1111 = 0x00;
+    data[1] = (uint8_t)( (value & 0xff00) >> 8 );  // 小于256的数都是0
+    data[0] = (uint8_t)( value & 0xff ); // 200: 1100 1000 & 1111 1111 = 0xc8 就是200;
+    // data = 0xc800
     can1->controller.SendMsg(jointBeingUsed->ID, CMDTYPE_WR_NR, index, data, 2);
     can1->controller.delayMs(1);
     qDebug("PID::setNewPID(): value = %d", value);
