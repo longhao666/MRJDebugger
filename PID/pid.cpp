@@ -201,14 +201,14 @@ void PID::setNewPID(int value,uint8_t index)
     data[0] = (uint8_t)( value & 0xff ); // 200: 1100 1000 & 1111 1111 = 0xc8 就是200;
     // data = 0xc800
     can1->controller.SendMsg(jointBeingUsed->ID, CMDTYPE_WR_NR, index, data, 2);
-    can1->controller.delayMs(1);
-    qDebug("PID::setNewPID(): value = %d", value);
+    can1->controller.delayMs(50);
+//    qDebug("PID::setNewPID(): value = %d", value);
     can1->controller.SendMsg(jointBeingUsed->ID,
                              CMDTYPE_RD,
                              index,
                              NULL,
                              0x02);
-    can1->controller.delayMs(5);
+    can1->controller.delayMs(50);
 }
 
 void PID::on_POS_PSpinBox_editingFinished()
@@ -258,6 +258,7 @@ void PID::on_POS_ISpinBox_editingFinished()
     if (jointBeingUsed != NULL) {
         can1->controller.GetValueInTable(jointBeingUsed->ID, index,data_L);
     }
+//    qDebug() << data_L << "============POS_ISpinBox========1";
     uiPID->POS_ISpinBox->setValue(data_L);
 }
 
@@ -354,6 +355,8 @@ void PID::on_SPD_ISpinBox_editingFinished()
         index = L_SPEED_I;
         break;
     }
+    int a = uiPID->SPD_ISpinBox->value();
+//    qDebug() << "====SPD_ISpinBox===========" << a;
     setNewPID(uiPID->SPD_ISpinBox->value(),index);
 
     uint16_t data_L = 0;
@@ -361,6 +364,7 @@ void PID::on_SPD_ISpinBox_editingFinished()
     if (jointBeingUsed != NULL) {
         can1->controller.GetValueInTable(jointBeingUsed->ID, index,data_L);
     }
+//    qDebug() << data_L << "====SPD_ISpinBox===========" << a;
     uiPID->SPD_ISpinBox->setValue(data_L);
 
 }
@@ -528,6 +532,7 @@ void PID::on_maxAccLineEdit_editingFinished()
     if (jointBeingUsed != NULL) {
         can1->controller.GetValueInTable(jointBeingUsed->ID, LIT_MAX_ACC,data_L);
     }
+//    qDebug() << data_L << "====maxAccLineEdit================1";
     uiPID->maxAccLineEdit->setText(QString::number(data_L, 10));
 }
 
@@ -540,6 +545,7 @@ void PID::on_minPosLLineEdit_editingFinished()
     if (jointBeingUsed != NULL) {
         can1->controller.GetValueInTable(jointBeingUsed->ID, LIT_MIN_POSITION_L,data_L);
     }
+//    qDebug() << data_L << "====================1";
     uiPID->minPosLLineEdit->setText(QString::number(data_L, 10));
 }
 
