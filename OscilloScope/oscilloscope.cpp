@@ -1,4 +1,4 @@
-﻿#include "oscilloscope.h"
+#include "oscilloscope.h"
 #include "ui_oscilloscope.h"
 
 #define OSCILLO_SCOPE_INTEVAL 10    // 示波器采样周期（ms）
@@ -133,12 +133,12 @@ void OscilloScope::OscilloScopeInitialize(uint16_t ID)
   uint16_t data_L = 0;
   // 记录对象标志MASK的初始化
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SCP_MASK,NULL,0x02);
-  can1->controller.delayMs(5);
+  can1->controller.delayMs(50);
   can1->controller.GetValueInTable(jointBeingUsed->ID, SCP_MASK,data_L);
   osthread->paintArea->Mask = data_L;
   //参数表中的“记录时间间隔（对10kHZ的分频值）”显示到测量条件选项卡中的对应控件里
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SCP_REC_TIM,NULL,0x02);
-  can1->controller.delayMs(5);
+  can1->controller.delayMs(50);
   can1->controller.GetValueInTable(jointBeingUsed->ID, SCP_REC_TIM,data_L);
   osthread->paintArea->ScanFrequency = data_L;
   uiOscilloScope->ScanFrequencyComboBox->setVisible(false); // 扫描频率设置改为不可见

@@ -31,28 +31,28 @@ void PID::PIDInitialize(uint16_t ID)
     // 初始化API中的MCT里的PID
     for (int i = SEV_CURRENT_P; i <= SEV_POSITION_DS; i++) {
         can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,i,NULL,0x02);
-        can1->controller.delayMs(1);
+        can1->controller.delayMs(50);
     }
     for (int i = M_CURRENT_P; i <= M_POSITION_DS; i++) {
         can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,i,NULL,0x02);
-        can1->controller.delayMs(1);
+        can1->controller.delayMs(50);
     }
     for (int i = L_CURRENT_P; i <= L_POSITION_DS; i++) {
         can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,i,NULL,0x02);
-        can1->controller.delayMs(1);
+        can1->controller.delayMs(50);
     }
-    can1->controller.delayMs(5);
+    can1->controller.delayMs(50);
     on_adjustGroupComboBox_currentIndexChanged(uiPID->adjustGroupComboBox->currentIndex());
 
     // 初始化API中的MCT里的限制值
     can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,LIT_MAX_CURRENT,NULL,0x02);
-    can1->controller.delayMs(1);
+    can1->controller.delayMs(50);
     can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,LIT_MAX_SPEED,NULL,0x02);
-    can1->controller.delayMs(1);
+    can1->controller.delayMs(50);
     can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,LIT_MAX_ACC,NULL,0x02);
-    can1->controller.delayMs(1);
+    can1->controller.delayMs(50);
     can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,LIT_MIN_POSITION_L,NULL,0x08);
-    can1->controller.delayMs(5);
+    can1->controller.delayMs(50);
 
     uint16_t data_L = 0;
 

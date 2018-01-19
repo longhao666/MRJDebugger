@@ -1,4 +1,4 @@
-﻿#include <QDebug>
+#include <QDebug>
 #include <QDateTime>
 #include <vector>
 #include "oscilloscopethread.h"
@@ -136,7 +136,7 @@ void OscilloScopeThread::setMask()
                                   SCP_MASK,
                                   NULL,
                                   0x02 );
-//    JT->can1->controller.delayMs(5);
+//    JT->can1->controller.delayMs(50);
 }
 
 void OscilloScopeThread::getData()
@@ -174,7 +174,9 @@ void OscilloScopeThread::getData()
                                                          paintArea->showItems[i].Item + 1,
                                                          data_H);
                     double temp = data_L + (data_H * 65536);
-
+#if 0
+    qDebug() << "data_L = " << data_L << "data_H = " << data_H << "temp = " << temp;
+#endif
                     switch (paintArea->showItems[i].Item) {
                     case SCP_TAGCUR_L://(showItems[0].Item)://TAG_CURRENT_L:
                     case SCP_MEACUR_L://showItems[3].Item://SYS_CURRENT_L://若曲线是电流

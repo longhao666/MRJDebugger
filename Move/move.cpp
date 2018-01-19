@@ -76,7 +76,7 @@ void Move::moveInitialize(uint16_t ID)
   jointBeingUsed = can1->findJointID(ID); // 修改当前控制的模块ID
   if (jointBeingUsed != NULL) {
     jointBeingUsed->updateCurPos();
-    can1->controller.delayMs(5);
+    can1->controller.delayMs(50);
   }
 //  if (this->MC == NULL) {
 //    this->MC = new MotionControl(jointBeingUsed, this);
@@ -125,7 +125,7 @@ void Move::on_txtBias_editingFinished()
     }
   }
   bias = uiMove->txtBias->text().toDouble();
-  qDebug() << bias << 123;
+//  qDebug() << bias << 123;
   txtBiasChangemanualSlider();
 //  if (uiMove->cmbWorkMode->currentIndex() == MODE_POSITION
 //      && uiMove->waveModeCombo->currentIndex() == MODE_MANUAL) {
@@ -148,9 +148,9 @@ void Move::on_cmbWorkMode_currentIndexChanged(int index)
   uint8_t workMode = static_cast<uint8_t>(index);
 
   jointBeingUsed->setWorkMode(workMode);
-  can1->controller.delayMs(10);
+  can1->controller.delayMs(50);
   jointBeingUsed->updateWorkMode();
-  can1->controller.delayMs(10);
+  can1->controller.delayMs(50);
 
   // 工作模式更新bias
   workModeUpdatetxtBias();
@@ -169,14 +169,14 @@ void Move::workModeUpdatetxtBias()
   {
     case MODE_OPEN:
       jointBeingUsed->updateTagPWM();
-      can1->controller.delayMs(5);
+      can1->controller.delayMs(50);
       uiMove->txtBias->setValue(jointBeingUsed->getTagPWM()); // 由当前目标PWM更新手动控制中的偏移量
       uiMove->manualMax->setText("30");
       uiMove->manualMin->setText("-30");
       break;
     case MODE_CURRENT:
       jointBeingUsed->updateCurI();
-      can1->controller.delayMs(5);
+      can1->controller.delayMs(50);
       //            uiMove->txtBias->setValue(can1->getCurI(jointBeingUsed)); // 由当前实际电流更新手动控制中的偏移量，实际中处于0位的机械臂2关节突然掉下
       uiMove->txtBias->setValue(0); // 和上面注释的那句效果一样，不如就改成0
       uiMove->manualMax->setText("500");
@@ -184,7 +184,7 @@ void Move::workModeUpdatetxtBias()
       break;
     case MODE_SPEED:
       jointBeingUsed->updateCurSpeed();
-      can1->controller.delayMs(5);
+      can1->controller.delayMs(50);
       uiMove->txtBias->setValue(static_cast<double>(jointBeingUsed->getCurSpeed())); // 由当前实际电流更新手动控制中的偏移量
       uiMove->manualMax->setText("20");
       uiMove->manualMin->setText("-20");
@@ -192,7 +192,7 @@ void Move::workModeUpdatetxtBias()
     case MODE_POSITION: {
         //            qDebug() << "ID: " << jointBeingUsed->ID;
         jointBeingUsed->updateCurPos();
-        can1->controller.delayMs(5);
+        can1->controller.delayMs(50);
         float tempf = jointBeingUsed->getCurPos(JOINT_ANGLE);
         //            qDebug() << tempf;
         double tempd = static_cast<double>(tempf);
@@ -317,19 +317,19 @@ void Move::on_stopButton_clicked()
     case MODE_OPEN: {
         uint8_t pwm = 0;
         jointBeingUsed->setTagPWM(pwm);
-        can1->controller.delayMs(5);
+        can1->controller.delayMs(50);
         break;
       }
     case MODE_CURRENT: {
         int curI = 0;
         jointBeingUsed->setTagI(curI);
-        can1->controller.delayMs(5);
+        can1->controller.delayMs(50);
         break;
       }
     case MODE_SPEED: {
         float speed = 0;
         jointBeingUsed->setTagSpeed(speed);
-        can1->controller.delayMs(5);
+        can1->controller.delayMs(50);
         break;
       }
     case MODE_POSITION: {
@@ -338,7 +338,7 @@ void Move::on_stopButton_clicked()
         // So use another method: switch the WorkMode to speed then set the speed to 0, then switch back. The hardware could ensure to update the target location.
         // 但实际使用时，各关节都处于0位，2关节和4关节受到重力影响，这样的停止方式会发生运动，而且不停地按stop会持续性地运动
         jointBeingUsed->updateCurPos();
-        can1->controller.delayMs(5);
+        can1->controller.delayMs(50);
 //        if (uiMove->waveModeCombo->currentIndex() == MODE_MANUAL) {
 //          //            // 改成用10ms控制器控制的方式
 //          //            float currentPos = jointBeingUsed->getCurPos(JOINT_RADIAN);

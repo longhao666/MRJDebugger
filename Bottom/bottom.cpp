@@ -170,7 +170,7 @@ void Bottom::on_enableDriverPushButton_clicked()
                            SYS_ENABLE_DRIVER,
                            NULL,
                            0x02);
-  can1->controller.delayMs(5);
+  can1->controller.delayMs(50);
   uint16_t data_L = 0;
   can1->controller.GetValueInTable(jointBeingUsed->ID,
                                    SYS_ENABLE_DRIVER,
@@ -203,7 +203,7 @@ void Bottom::updateEnableDriver()
                            SYS_ENABLE_DRIVER,
                            NULL,
                            0x02);
-  can1->controller.delayMs(2);
+  can1->controller.delayMs(50);
   uint16_t data_L = 0;
   can1->controller.GetValueInTable(jointBeingUsed->ID,
                                    SYS_ENABLE_DRIVER,
@@ -234,7 +234,7 @@ void Bottom::updateIfError() {
                            SYS_ERROR,
                            NULL,
                            0x02);
-  can1->controller.delayMs(2);
+  can1->controller.delayMs(50);
   can1->controller.GetValueInTable(jointBeingUsed->ID,
                                    SYS_ERROR,
                                    data_L);
@@ -301,7 +301,7 @@ void Bottom::on_cmbID_currentIndexChanged(const QString &arg1)
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_MODEL_TYPE,NULL,0x02);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_FW_VERSION,NULL,0x02);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_REDU_RATIO,NULL,0x02);
-  can1->controller.delayMs(5);
+  can1->controller.delayMs(50);
   uint16_t data_L = 0;
   can1->controller.GetValueInTable(jointBeingUsed->ID, SYS_MODEL_TYPE,data_L);
   modelTypeBeingUsed = data_L;
