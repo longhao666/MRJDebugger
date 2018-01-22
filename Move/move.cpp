@@ -186,6 +186,7 @@ void Move::workModeUpdatetxtBias()
       jointBeingUsed->updateCurSpeed();
       can1->controller.delayMs(50);
       uiMove->txtBias->setValue(static_cast<double>(jointBeingUsed->getCurSpeed())); // 由当前实际电流更新手动控制中的偏移量
+//      uiMove->txtBias->setValue(0);
       uiMove->manualMax->setText("20");
       uiMove->manualMin->setText("-20");
       break;

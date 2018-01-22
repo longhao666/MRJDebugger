@@ -59,7 +59,7 @@ void PID::PIDInitialize(uint16_t ID)
     can1->controller.GetValueInTable(jointBeingUsed->ID, LIT_MAX_CURRENT,data_L);
     uiPID->maxCurLineEdit->setText(QString::number(data_L, 10));
     can1->controller.GetValueInTable(jointBeingUsed->ID, LIT_MAX_SPEED,data_L);
-    uiPID->maxSpdLineEdit->setText(QString::number(data_L/100, 10));
+    uiPID->maxSpdLineEdit->setText(QString::number(data_L, 10));
     can1->controller.GetValueInTable(jointBeingUsed->ID, LIT_MAX_ACC,data_L);
     uiPID->maxAccLineEdit->setText(QString::number(data_L, 10));
     can1->controller.GetValueInTable(jointBeingUsed->ID, LIT_MIN_POSITION_L,data_L);
@@ -513,14 +513,14 @@ void PID::on_maxCurLineEdit_editingFinished()
 
 void PID::on_maxSpdLineEdit_editingFinished()
 {
-    setNewPID(uiPID->maxSpdLineEdit->text().toInt()*100,LIT_MAX_SPEED);
+    setNewPID(uiPID->maxSpdLineEdit->text().toInt(),LIT_MAX_SPEED);
 
     uint16_t data_L = 0;
 
     if (jointBeingUsed != NULL) {
         can1->controller.GetValueInTable(jointBeingUsed->ID, LIT_MAX_SPEED,data_L);
     }
-    uiPID->maxSpdLineEdit->setText(QString::number(data_L/100, 10));
+    uiPID->maxSpdLineEdit->setText(QString::number(data_L, 10));
 }
 
 void PID::on_maxAccLineEdit_editingFinished()

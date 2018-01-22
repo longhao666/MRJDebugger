@@ -158,11 +158,38 @@ void OscilloScopeThread::getData()
         // 间隔计数会从1开始判断
         ++gatherCount;
         // 按照Interval限定的间隔去执行
+#if 0
+        qDebug() << "paintArea->Interval = " << paintArea->Interval; // 结果为 1
+#endif
         if (gatherCount >= paintArea->Interval) {
             // 间隔计数清零
             gatherCount = 0;
             // 分别处理每个显示项
             // 显示项的显示队列不为0才向队列追加一个新值，该32位有符号值由2个16位有符号数组合而成
+#if 0
+//#define SCP_TAGCUR_L          0x92    //目标电流数据集
+//#define SCP_TAGCUR_H          0x93    //目标电流数据集
+//#define SCP_MEACUR_L          0x94    //实际电流数据集
+//#define SCP_MEACUR_H          0x95    //实际电流数据集
+//#define SCP_TAGSPD_L          0x96    //目标速度数据集
+//#define SCP_TAGSPD_H          0x97    //目标速度数据集
+//#define SCP_MEASPD_L          0x98    //实际速度数据集
+//#define SCP_MEASPD_H          0x99    //实际速度数据集
+//#define SCP_TAGPOS_L          0x9A    //目标位置数据集
+//#define SCP_TAGPOS_H          0x9B    //目标位置数据集
+//#define SCP_MEAPOS_L          0x9C    //实际位置数据集
+//#define SCP_MEAPOS_H          0x9D    //实际位置数据集
+            /*
+             *  6次,依次为:
+             *  0: 触发方式： 0-上升沿， 1-下降沿， 2-连续采样， 3-用户触发 0x92 146 居然是给tgcur画波形的
+             *  1: 目标电流数据集 0x96 150 居然是给tgspd画波形的
+             *  2: 目标位置数据集 0x9a 154 居然是给tgpos画波形的
+             *  3: 记录时间间隔（对 10kHZ 的分频值） 0x94 148 居然是给rlcur画波形的
+             *  4: 目标速度数据集 0x98 152 居然是给respd画波形的
+             *  5: 保留 0x9c 156 居然是给rlpos画波形的
+             */
+        qDebug() << "paintArea->showItems.size() = " << paintArea->showItems.size(); // 结果为 6
+#endif
             for (unsigned int i = 0; i < paintArea->showItems.size(); i++) {
                 if (paintArea->showItems[i].sq.MaxLength != 0 && paintArea->showItems[i].IsCheck) {
                     uint16_t data_L = 0;
@@ -174,8 +201,10 @@ void OscilloScopeThread::getData()
                                                          paintArea->showItems[i].Item + 1,
                                                          data_H);
                     double temp = data_L + (data_H * 65536);
-#if 0
-    qDebug() << "data_L = " << data_L << "data_H = " << data_H << "temp = " << temp;
+#if 1
+                    qDebug() << "paintArea->showItems[i].Item = " << paintArea->showItems[i].Item;
+                    qDebug() << "paintArea->showItems[i].Item + 1 = " << paintArea->showItems[i].Item + 1;
+//    qDebug() << "data_L = " << data_L << "data_H = " << data_H << "temp = " << temp;
 #endif
                     switch (paintArea->showItems[i].Item) {
                     case SCP_TAGCUR_L://(showItems[0].Item)://TAG_CURRENT_L:
