@@ -329,8 +329,6 @@ void Bottom::updateWorkModePushButton() {
   QString background = "background-color: rgb(";
   background += QString::number(ENonP_RGB_R) + ',' + QString::number(ENonP_RGB_G) + ',' + QString::number(ENonP_RGB_B) + ");";
   uiBottom->workModePushButton->setStyleSheet(background);
-
-
   int workMode = jointBeingUsed->getWorkMode();
   switch(workMode) {// 工作模式修改后，修改txtBias
     case MODE_OPEN:

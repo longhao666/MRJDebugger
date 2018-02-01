@@ -43,7 +43,7 @@ void SetAndHealth::set()
   ENonPPushButtonOff += QString::number(TGPOS_RGB_R) + ',' + QString::number(TGPOS_RGB_G) + ',' + QString::number(TGPOS_RGB_B) + ");";
   // 初始化API中的MCT里的ENABLE_ON_POWER
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_ENABLE_ON_POWER,NULL,0x02);
-  can1->controller.delayMs(2); // 1 ms并不能成功更新MCT
+  can1->controller.delayMs(50); // 1 ms并不能成功更新MCT
   uint16_t data_L = 0;
   can1->controller.GetValueInTable(jointBeingUsed->ID, SYS_ENABLE_ON_POWER,data_L);
   //    cout << "Set() - data_L: " << data_L << endl;
@@ -78,6 +78,7 @@ void SetAndHealth::on_setZeroPushButton_clicked()
   int workMode = jointBeingUsed->getWorkMode();
   if (3 == workMode) {
     // 停止运动控制
+      // 一停下来马上就点击设置0位按钮会有很大的抖动,停下一会后再点击相对来说会好一点
     emit ZeroPositionSeted();
     // 设置0位
     jointBeingUsed->setZeroPos();
@@ -106,7 +107,7 @@ void SetAndHealth::on_ENonPPushButton_clicked()
   data[1] = (uint8_t)( (value & 0xff00) >> 8 );
   data[0] = (uint8_t)( value & 0xff );
   can1->controller.SendMsg(jointBeingUsed->ID, CMDTYPE_WR_NR, SYS_ENABLE_ON_POWER, data, 2);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(50);
   qDebug("SetAndHealth::on_ENonPPushButton_clicked(): value = %d", value);
   set();
 }
@@ -117,8 +118,8 @@ void SetAndHealth::health()
   if (timerMonitor == NULL) {
     timerMonitor = new QTimer(this);
     connect(timerMonitor,SIGNAL(timeout()),this,SLOT(slotTimeMonitorDone()));
-    timerMonitor->start(MONITOR_INTEVAL);
-    uiSetAndHealth->updateButton->setVisible(false);
+//    timerMonitor->start(MONITOR_INTEVAL);
+//    uiSetAndHealth->updateButton->setVisible(false);
   } // 暂时持续性地更新数据 // 暂时不需要持续性地更新数据
 }
 
@@ -143,22 +144,22 @@ void SetAndHealth::slotTimeMonitorDone()
   }
 
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_VOLTAGE,NULL,0x02);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(5);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_CURRENT_L,NULL,0x04);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(5);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_TEMP,NULL,0x02);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(5);
   //    can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_SPEED_L,NULL,0x04);
   jointBeingUsed->updateCurSpeed();
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(5);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_POSITION_L,NULL,0x04);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(5);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,MOT_ST_DAT,NULL,0x04);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(5);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SYS_ERROR,NULL,0x02);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(5);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,BAT_VOLT,NULL,0x02);
-  can1->controller.delayMs(1);
+  can1->controller.delayMs(5);
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,ACC_X,NULL,0x06);
   can1->controller.delayMs(5);
 

@@ -149,8 +149,9 @@ void OscilloScopeThread::getData()
     if (JT->jointBeingUsed == NULL) {
         return;
     }
-//    qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz");
-
+#if 0
+    qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz");
+#endif
     // 示波器绘制曲线使能开启
     if (paintArea->EnableScope) {
         // 示波器显示曲线用的计数量
@@ -190,21 +191,27 @@ void OscilloScopeThread::getData()
              */
         qDebug() << "paintArea->showItems.size() = " << paintArea->showItems.size(); // 结果为 6
 #endif
+#if 0
+    qDebug() << "1====================" << QDateTime::currentDateTime().toString("hh:mm:ss:zzz");
+#endif
+#if 1
             for (unsigned int i = 0; i < paintArea->showItems.size(); i++) {
                 if (paintArea->showItems[i].sq.MaxLength != 0 && paintArea->showItems[i].IsCheck) {
                     uint16_t data_L = 0;
                     uint16_t data_H = 0;
+#if 1
                     JT->can1->controller.GetValueInTable(JT->jointBeingUsed->ID,
                                                          paintArea->showItems[i].Item,
                                                          data_L);
                     JT->can1->controller.GetValueInTable(JT->jointBeingUsed->ID,
                                                          paintArea->showItems[i].Item + 1,
                                                          data_H);
+#endif
                     double temp = data_L + (data_H * 65536);
-#if 1
+#if 0
                     qDebug() << "paintArea->showItems[i].Item = " << paintArea->showItems[i].Item;
                     qDebug() << "paintArea->showItems[i].Item + 1 = " << paintArea->showItems[i].Item + 1;
-//    qDebug() << "data_L = " << data_L << "data_H = " << data_H << "temp = " << temp;
+                    qDebug() << "data_L = " << data_L << "data_H = " << data_H << "temp = " << temp;
 #endif
                     switch (paintArea->showItems[i].Item) {
                     case SCP_TAGCUR_L://(showItems[0].Item)://TAG_CURRENT_L:
@@ -234,8 +241,12 @@ void OscilloScopeThread::getData()
                     paintArea->showItems[i].sq.Append(temp);
                 }
             }
+#endif
         }
     }
+#if 0
+    qDebug() << "2====================" << QDateTime::currentDateTime().toString("hh:mm:ss:zzz");
+#endif
 }
 
 void OscilloScopeThread::showData()

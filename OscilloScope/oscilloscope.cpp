@@ -1,7 +1,7 @@
 #include "oscilloscope.h"
 #include "ui_oscilloscope.h"
 
-#define OSCILLO_SCOPE_INTEVAL 10    // 示波器采样周期（ms）
+#define OSCILLO_SCOPE_INTEVAL 100    // 示波器采样周期（ms）
 
 OscilloScope::OscilloScope(UserControlOnCan* can1, Joint* jointBeingUsed, QWidget* parent) :
   QWidget(parent),
@@ -136,11 +136,17 @@ void OscilloScope::OscilloScopeInitialize(uint16_t ID)
   can1->controller.delayMs(50);
   can1->controller.GetValueInTable(jointBeingUsed->ID, SCP_MASK,data_L);
   osthread->paintArea->Mask = data_L;
+#if 1
+  qDebug() << "data_L" << data_L << "osthread->paintArea->Mask" << osthread->paintArea->Mask;
+#endif
   //参数表中的“记录时间间隔（对10kHZ的分频值）”显示到测量条件选项卡中的对应控件里
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_RD,SCP_REC_TIM,NULL,0x02);
   can1->controller.delayMs(50);
   can1->controller.GetValueInTable(jointBeingUsed->ID, SCP_REC_TIM,data_L);
   osthread->paintArea->ScanFrequency = data_L;
+#if 1
+  qDebug() << "data_L" << data_L << "osthread->paintArea->ScanFrequency" << osthread->paintArea->ScanFrequency;
+#endif
   uiOscilloScope->ScanFrequencyComboBox->setVisible(false); // 扫描频率设置改为不可见
   //同样，用参数表中的“记录时间间隔（对10kHZ的分频值）”设置扫描频率，初始化Interval
   osthread->paintArea->Interval = osthread->paintArea->ScanFrequency / 10 / OSCILLO_SCOPE_INTEVAL; // think about frequency division factor of 10 kHz(ScanFrequency / 10 = Interval * OSCILLO_SCOPE_INTEVAL)
@@ -322,6 +328,7 @@ void OscilloScope::on_scopeEnablePushButton_clicked()
   }
 }
 
+#if 0 // 暂时没有用到
 void OscilloScope::on_offset_POSLineEdit_editingFinished()
 {
   if (osthread == NULL) {
@@ -443,3 +450,4 @@ void OscilloScope::on_ScanFrequencyComboBox_currentIndexChanged(int index)
   can1->controller.SendMsg(jointBeingUsed->ID,CMDTYPE_WR_NR,SCP_REC_TIM,data,0x02);
   can1->controller.delayMs(5);
 }
+#endif
